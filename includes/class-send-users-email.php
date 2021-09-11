@@ -157,6 +157,9 @@ class Send_Users_Email {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// Initialize Admin menu
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
+
 	}
 
 	/**
