@@ -79,4 +79,5 @@ function run_send_users_email() {
 	$plugin->run();
 
 }
+
 run_send_users_email();

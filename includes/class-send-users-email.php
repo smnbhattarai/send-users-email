@@ -35,7 +35,7 @@ class Send_Users_Email {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Send_Users_Email_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Send_Users_Email_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Send_Users_Email {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Send_Users_Email {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -160,6 +160,9 @@ class Send_Users_Email {
 		// Initialize Admin menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
 
+		// User email handler
+		$this->loader->add_action( "wp_ajax_sue_user_email_ajax", $plugin_admin, 'handle_ajax_admin_user_email' );
+
 	}
 
 	/**
@@ -191,8 +194,8 @@ class Send_Users_Email {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -201,8 +204,8 @@ class Send_Users_Email {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Send_Users_Email_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -211,8 +214,8 @@ class Send_Users_Email {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

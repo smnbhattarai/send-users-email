@@ -74,9 +74,9 @@ class Send_Users_Email_Admin {
 // Add css to this plugin page only
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
-			wp_enqueue_style( 'bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1', 'all' );
-			wp_enqueue_style( 'bootstrap-5-datatable', plugin_dir_url( __FILE__ ) . 'css/dataTables.bootstrap5.min.css', array(), '1.11.1', 'all' );
-			wp_enqueue_style( 'select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'sue-bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1', 'all' );
+			wp_enqueue_style( 'sue-bootstrap-5-datatable', plugin_dir_url( __FILE__ ) . 'css/dataTables.bootstrap5.min.css', array( 'sue-bootstrap-5' ), '1.11.2', 'all' );
+			wp_enqueue_style( 'sue-select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/send-users-email-admin.css', array(), $this->version, 'all' );
 		}
 
@@ -92,7 +92,7 @@ class Send_Users_Email_Admin {
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
 			wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array( 'jquery' ), '5.1.1', true );
-			wp_enqueue_script( 'datatable-js', plugin_dir_url( __FILE__ ) . 'js/jquery.dataTables.min.js', array( 'jquery' ), '1.11.1', true );
+			wp_enqueue_script( 'datatable-js', plugin_dir_url( __FILE__ ) . 'js/jquery.dataTables.min.js', array( 'jquery' ), '1.11.2', true );
 			wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), '1.11.1', true );
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/send-users-email-admin.js', array( 'jquery' ), $this->version, true );
 		}
@@ -162,7 +162,9 @@ class Send_Users_Email_Admin {
 	 * Handle Email send selecting users
 	 */
 	public function users_email() {
+		// Get system users
 		$blog_users = get_users( array( 'fields' => array( 'ID', 'display_name', 'user_email' ) ) );
+
 		require_once 'partials/users-email.php';
 	}
 
@@ -178,6 +180,84 @@ class Send_Users_Email_Admin {
 	 */
 	public function settings() {
 		require_once 'partials/settings.php';
+	}
+
+	/**
+	 * Handles Ajax request to send user email selecting users
+	 */
+	public function handle_ajax_admin_user_email() {
+
+		if ( check_admin_referer( 'sue-email-user' ) ) {
+
+			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
+
+			if ( $param == 'send_email_user' && $action == 'sue_user_email_ajax' ) {
+				$subject = isset( $_REQUEST['subject'] ) ? strip_tags( $_REQUEST['subject'] ) : "";
+				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
+				$users   = $_REQUEST['users'] ?? [];
+
+				// Validate inputs
+				$validation_message = [];
+
+				if ( empty( $subject ) || strlen( $subject ) < 2 || strlen( $subject ) > 200 ) {
+					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.', "send-users-email" );
+				}
+
+				if ( empty( $message ) ) {
+					$validation_message['message'] = __( 'Please provide email content.', "send-users-email" );
+				}
+
+				if ( empty( $users ) ) {
+					$validation_message['sue-user-email-datatable'] = __( 'Please select users.', "send-users-email" );
+				}
+
+				// If validation fails send, error messages
+				if ( count( $validation_message ) > 0 ) {
+					wp_send_json( array( 'errors' => $validation_message, 'success' => false ), 422 );
+				}
+
+				// Check if current user is admin --- For now only administrator can send email
+				if ( current_user_can( 'administrator' ) ) {
+
+					$user_details = get_users( [
+						'include' => $users,
+						'fields'  => [ 'ID', 'display_name', 'user_email' ]
+					] );
+
+					foreach ( $user_details as $user ) {
+						$email_body   = $message;
+						$display_name = $user->display_name;
+						$user_email   = $user->user_email;
+
+						$user_meta  = get_user_meta( $user->ID );
+						$first_name = isset( $user_meta['first_name'][0] ) ? $user_meta['first_name'][0] : '';
+						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
+
+						// Replace placeholder with user content
+						$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
+						$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
+						$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
+						$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
+						$email_body = nl2br( $email_body );
+
+						// Send email
+						$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+						wp_mail( $user_email, $subject, $email_body, $headers );
+						$email_body = '';
+
+					}
+
+					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
+
+				}
+
+				wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+
+			}
+
+		}
+
 	}
 
 }

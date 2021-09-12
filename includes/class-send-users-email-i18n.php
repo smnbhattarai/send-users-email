@@ -43,5 +43,4 @@ class Send_Users_Email_i18n {
 	}
 
 
-
 }
