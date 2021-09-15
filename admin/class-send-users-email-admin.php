@@ -219,7 +219,7 @@ class Send_Users_Email_Admin {
 				}
 
 				// Cleanup email progress record
-				Send_Users_Email_cleanup::cleanupEmailProgress();
+				Send_Users_Email_cleanup::cleanupUserEmailProgress();
 
 				// Check if current user is admin --- For now only administrator can send email
 				if ( current_user_can( 'administrator' ) ) {
@@ -266,6 +266,7 @@ class Send_Users_Email_Admin {
 						// Send email
 						$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
 						//wp_mail( $user_email, $subject, $email_body, $headers );
+
 						$email_body = '';
 
 						$total_email_send ++;
@@ -275,7 +276,7 @@ class Send_Users_Email_Admin {
 					}
 
 					// Cleanup email progress record
-					Send_Users_Email_cleanup::cleanupEmailProgress();
+					Send_Users_Email_cleanup::cleanupUserEmailProgress();
 
 					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
 
@@ -291,7 +292,9 @@ class Send_Users_Email_Admin {
 
 	}
 
-
+	/**
+	 * Handle users email progress
+	 */
 	public function handle_ajax_email_users_progress() {
 
 		if ( current_user_can( 'administrator' ) ) {
@@ -304,6 +307,139 @@ class Send_Users_Email_Admin {
 				$in_progress         = $options[ 'email_users_email_send_start_' . $user_id ];
 				$total_email_send    = $options[ 'email_users_total_email_send_' . $user_id ];
 				$total_email_to_send = $options[ 'email_users_total_email_to_send_' . $user_id ];
+				$progress            = floor( ( $total_email_send / $total_email_to_send ) * 100 );
+
+				wp_send_json( array( 'progress' => $progress, 'success' => $in_progress ), 200 );
+			}
+		}
+
+		wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+	}
+
+	/**
+	 * Handles Ajax request to send user email selecting users
+	 */
+	public function handle_ajax_admin_role_email() {
+
+		if ( check_admin_referer( 'sue-email-user' ) ) {
+
+			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
+
+			if ( $param == 'send_email_role' && $action == 'sue_role_email_ajax' ) {
+				$subject = isset( $_REQUEST['subject'] ) ? strip_tags( $_REQUEST['subject'] ) : "";
+				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
+				$roles   = $_REQUEST['roles'] ?? [];
+
+				// Validate inputs
+				$validation_message = [];
+
+				if ( empty( $subject ) || strlen( $subject ) < 2 || strlen( $subject ) > 200 ) {
+					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.', "send-users-email" );
+				}
+
+				if ( empty( $message ) ) {
+					$validation_message['message'] = __( 'Please provide email content.', "send-users-email" );
+				}
+
+				if ( empty( $roles ) ) {
+					$validation_message['sue-role-email-list'] = __( 'Please select role(s).', "send-users-email" );
+				}
+
+				// If validation fails send, error messages
+				if ( count( $validation_message ) > 0 ) {
+					wp_send_json( array( 'errors' => $validation_message, 'success' => false ), 422 );
+				}
+
+				// Cleanup email progress record
+				Send_Users_Email_cleanup::cleanupRoleEmailProgress();
+
+				// Check if current user is admin --- For now only administrator can send email
+				if ( current_user_can( 'administrator' ) ) {
+
+					$user_id          = get_current_user_id();
+					$total_email_send = 0;
+
+					$user_details = get_users( array( 'fields'   => array( 'ID', 'display_name', 'user_email' ),
+					                                  'role__in' => $roles
+					) );
+
+					$total_email_to_send = count( $user_details );
+
+					$options = get_option( 'sue_send_users_email' );
+
+					if ( ! $options ) {
+						update_option( 'sue_send_users_email', [] );
+					}
+
+					$options = get_option( 'sue_send_users_email' );
+
+					$options[ 'email_roles_email_send_start_' . $user_id ]    = true;
+					$options[ 'email_roles_total_email_send_' . $user_id ]    = $total_email_send;
+					$options[ 'email_roles_total_email_to_send_' . $user_id ] = $total_email_to_send;
+
+					update_option( 'sue_send_users_email', $options );
+
+					foreach ( $user_details as $user ) {
+						$email_body   = $message;
+						$display_name = $user->display_name;
+						$user_email   = $user->user_email;
+
+						$user_meta  = get_user_meta( $user->ID );
+						$first_name = isset( $user_meta['first_name'][0] ) ? $user_meta['first_name'][0] : '';
+						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
+
+						// Replace placeholder with user content
+						$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
+						$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
+						$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
+						$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
+						$email_body = nl2br( $email_body );
+
+						// Send email
+						$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+						wp_mail( $user_email, $subject, $email_body, $headers );
+
+						$email_body = '';
+
+						$total_email_send ++;
+						$options[ 'email_roles_total_email_send_' . $user_id ] = $total_email_send;
+						update_option( 'sue_send_users_email', $options );
+
+					}
+
+					// Cleanup email progress record
+					Send_Users_Email_cleanup::cleanupRoleEmailProgress();
+
+					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
+
+				}
+
+				wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+
+			}
+
+		}
+
+		wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+
+	}
+
+	/**
+	 * Handle users email progress
+	 */
+	public function handle_ajax_email_roles_progress() {
+
+		if ( current_user_can( 'administrator' ) ) {
+			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
+
+			if ( $param == 'send_email_role_progress' && $action == 'sue_email_roles_progress' ) {
+				$user_id             = get_current_user_id();
+				$options             = get_option( 'sue_send_users_email' );
+				$in_progress         = $options[ 'email_roles_email_send_start_' . $user_id ];
+				$total_email_send    = $options[ 'email_roles_total_email_send_' . $user_id ];
+				$total_email_to_send = $options[ 'email_roles_total_email_to_send_' . $user_id ];
 				$progress            = floor( ( $total_email_send / $total_email_to_send ) * 100 );
 
 				wp_send_json( array( 'progress' => $progress, 'success' => $in_progress ), 200 );

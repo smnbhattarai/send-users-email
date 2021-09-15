@@ -168,8 +168,14 @@ class Send_Users_Email {
 		// User email handler
 		$this->loader->add_action( "wp_ajax_sue_user_email_ajax", $plugin_admin, 'handle_ajax_admin_user_email' );
 
-		// Email send progress
+		// User email send progress
 		$this->loader->add_action( "wp_ajax_sue_email_users_progress", $plugin_admin, 'handle_ajax_email_users_progress' );
+
+		// Role email handler
+		$this->loader->add_action( "wp_ajax_sue_role_email_ajax", $plugin_admin, 'handle_ajax_admin_role_email' );
+
+		// Role email send progress
+		$this->loader->add_action( "wp_ajax_sue_email_roles_progress", $plugin_admin, 'handle_ajax_email_roles_progress' );
 
 	}
 
