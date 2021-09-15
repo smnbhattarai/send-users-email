@@ -22,7 +22,7 @@ button .dashicons {
 }
 
 .sue-user-email-datatable-wrapper {
-    display: none;
+    visibility: hidden;
 }
 
 label {
@@ -31,4 +31,8 @@ label {
 
 .sue-spinner {
     display: none;
+}
+
+.sue-dashboard .badge {
+    font-size: 1.1em;
 }

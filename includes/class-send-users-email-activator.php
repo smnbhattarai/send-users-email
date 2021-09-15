@@ -30,7 +30,7 @@ class Send_Users_Email_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		update_option( 'sue_send_users_email', [] );
 	}
 
 }

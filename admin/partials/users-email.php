@@ -25,6 +25,7 @@
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="sueSelectAllUsers"></th>
+                                        <th><?php echo __( 'ID', 'send-users-email' ); ?></th>
                                         <th><?php echo __( 'Name', 'send-users-email' ); ?></th>
                                         <th><?php echo __( 'Email', 'send-users-email' ); ?></th>
                                     </tr>
@@ -34,6 +35,7 @@
                                         <tr>
                                             <td><input type="checkbox" class="sueUserCheck" name="users[]"
                                                        value="<?php echo $user->ID; ?>"></td>
+                                            <td><?php echo $user->ID; ?></td>
                                             <td><?php echo $user->display_name; ?></td>
                                             <td><?php echo $user->user_email; ?></td>
                                         </tr>
@@ -65,9 +67,14 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-9 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <div class="spinner-border text-info sue-spinner" role="status">
                                     <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="col-md-7 mt-2">
+                                <div class="progress" style="height: 20px; display: none;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                 </div>
                             </div>
                         </div>

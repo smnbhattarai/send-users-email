@@ -122,6 +122,11 @@ class Send_Users_Email {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-send-users-email-public.php';
 
+		/**
+		 * Plugin helper class for cleanup
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'helpers/cleanup.class.php';
+
 		$this->loader = new Send_Users_Email_Loader();
 
 	}
@@ -162,6 +167,9 @@ class Send_Users_Email {
 
 		// User email handler
 		$this->loader->add_action( "wp_ajax_sue_user_email_ajax", $plugin_admin, 'handle_ajax_admin_user_email' );
+
+		// Email send progress
+		$this->loader->add_action( "wp_ajax_sue_email_users_progress", $plugin_admin, 'handle_ajax_email_users_progress' );
 
 	}
 
