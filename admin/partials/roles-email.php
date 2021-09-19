@@ -6,8 +6,6 @@
                 <div class="card-body">
                     <h5 class="card-title mb-5 text-uppercase"><?php echo __( 'Send email to selected roles', 'send-users-email' ); ?></h5>
 
-                    <div class="sue-messages"></div>
-
                     <form action="javascript:void(0)" id="sue-roles-email-form" method="post">
 
                         <div class="mb-4">
@@ -26,7 +24,7 @@
 
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div class="form-check">
-                                                <input class="form-check-input" name="roles[]" type="checkbox"
+                                                <input class="form-check-input roleCheckbox" name="roles[]" type="checkbox"
                                                        value="<?php echo esc_attr( $slug ); ?>"
                                                        id="<?php echo esc_attr( $slug ); ?>"
                                                        style="margin-top: 7px;">
@@ -122,6 +120,9 @@
                             </td>
                         </tr>
                     </table>
+
+                    <div class="sue-messages"></div>
+
                 </div>
             </div>
         </div>

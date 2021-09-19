@@ -148,6 +148,7 @@ class Send_Users_Email_Admin {
 			'send-users-email-settings',
 			[ $this, 'settings' ]
 		);
+
 	}
 
 	/**
@@ -180,6 +181,11 @@ class Send_Users_Email_Admin {
 	 * Settings page
 	 */
 	public function settings() {
+		$options = get_option( 'sue_send_users_email' );
+		$logo    = $options['logo_url'] ?? '';
+		$title   = $options['email_title'] ?? '';
+		$tagline = $options['email_tagline'] ?? '';
+		$footer  = $options['email_footer'] ?? '';
 		require_once 'partials/settings.php';
 	}
 
@@ -236,7 +242,6 @@ class Send_Users_Email_Admin {
 
 					$options = get_option( 'sue_send_users_email' );
 
-					$options[ 'email_users_email_send_start_' . $user_id ]    = true;
 					$options[ 'email_users_total_email_send_' . $user_id ]    = $total_email_send;
 					$options[ 'email_users_total_email_to_send_' . $user_id ] = $total_email_to_send;
 
@@ -257,17 +262,16 @@ class Send_Users_Email_Admin {
 						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
 
 						// Replace placeholder with user content
-						$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
-						$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
-						$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
-						$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
-						$email_body = nl2br( $email_body );
+						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );
 
 						// Send email
-						$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
-						//wp_mail( $user_email, $subject, $email_body, $headers );
+						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
+						$email_template = $this->email_template( $email_body );
+						sleep( 2 );
+						wp_mail( $user_email, $subject, $email_template, $headers );
 
-						$email_body = '';
+						$email_body     = '';
+						$email_template = '';
 
 						$total_email_send ++;
 						$options[ 'email_users_total_email_send_' . $user_id ] = $total_email_send;
@@ -279,10 +283,9 @@ class Send_Users_Email_Admin {
 					Send_Users_Email_cleanup::cleanupUserEmailProgress();
 
 					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
+					die();
 
 				}
-
-				wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
 
 			}
 
@@ -304,12 +307,11 @@ class Send_Users_Email_Admin {
 			if ( $param == 'send_email_user_progress' && $action == 'sue_email_users_progress' ) {
 				$user_id             = get_current_user_id();
 				$options             = get_option( 'sue_send_users_email' );
-				$in_progress         = $options[ 'email_users_email_send_start_' . $user_id ];
 				$total_email_send    = $options[ 'email_users_total_email_send_' . $user_id ];
 				$total_email_to_send = $options[ 'email_users_total_email_to_send_' . $user_id ];
 				$progress            = floor( ( $total_email_send / $total_email_to_send ) * 100 );
 
-				wp_send_json( array( 'progress' => $progress, 'success' => $in_progress ), 200 );
+				wp_send_json( array( 'progress' => $progress ), 200 );
 			}
 		}
 
@@ -360,8 +362,9 @@ class Send_Users_Email_Admin {
 					$user_id          = get_current_user_id();
 					$total_email_send = 0;
 
-					$user_details = get_users( array( 'fields'   => array( 'ID', 'display_name', 'user_email' ),
-					                                  'role__in' => $roles
+					$user_details = get_users( array(
+						'fields'   => array( 'ID', 'display_name', 'user_email' ),
+						'role__in' => $roles
 					) );
 
 					$total_email_to_send = count( $user_details );
@@ -374,7 +377,6 @@ class Send_Users_Email_Admin {
 
 					$options = get_option( 'sue_send_users_email' );
 
-					$options[ 'email_roles_email_send_start_' . $user_id ]    = true;
 					$options[ 'email_roles_total_email_send_' . $user_id ]    = $total_email_send;
 					$options[ 'email_roles_total_email_to_send_' . $user_id ] = $total_email_to_send;
 
@@ -390,17 +392,16 @@ class Send_Users_Email_Admin {
 						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
 
 						// Replace placeholder with user content
-						$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
-						$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
-						$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
-						$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
-						$email_body = nl2br( $email_body );
+						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );
 
 						// Send email
-						$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
-						wp_mail( $user_email, $subject, $email_body, $headers );
+						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
+						$email_template = $this->email_template( $email_body );
+						sleep( 2 );
+						//wp_mail( $user_email, $subject, $email_template, $headers );
 
-						$email_body = '';
+						$email_body     = '';
+						$email_template = '';
 
 						$total_email_send ++;
 						$options[ 'email_roles_total_email_send_' . $user_id ] = $total_email_send;
@@ -412,10 +413,9 @@ class Send_Users_Email_Admin {
 					Send_Users_Email_cleanup::cleanupRoleEmailProgress();
 
 					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
+					die();
 
 				}
-
-				wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
 
 			}
 
@@ -437,16 +437,114 @@ class Send_Users_Email_Admin {
 			if ( $param == 'send_email_role_progress' && $action == 'sue_email_roles_progress' ) {
 				$user_id             = get_current_user_id();
 				$options             = get_option( 'sue_send_users_email' );
-				$in_progress         = $options[ 'email_roles_email_send_start_' . $user_id ];
 				$total_email_send    = $options[ 'email_roles_total_email_send_' . $user_id ];
 				$total_email_to_send = $options[ 'email_roles_total_email_to_send_' . $user_id ];
 				$progress            = floor( ( $total_email_send / $total_email_to_send ) * 100 );
 
-				wp_send_json( array( 'progress' => $progress, 'success' => $in_progress ), 200 );
+				wp_send_json( array( 'progress' => $progress ), 200 );
 			}
 		}
 
 		wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+	}
+
+	/**
+	 * Email template
+	 */
+	private function email_template( $email_body ) {
+		ob_start();
+		$options = get_option( 'sue_send_users_email' );
+		$logo    = $options['logo_url'] ?? '';
+		$title   = $options['email_title'] ?? '';
+		$tagline = $options['email_tagline'] ?? '';
+		$footer  = $options['email_footer'] ?? '';
+		require 'partials/email-template.php';
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		return $output;
+	}
+
+	/**
+	 * Plugin settings
+	 */
+	public function handle_ajax_admin_settings() {
+		if ( check_admin_referer( 'sue-email-user' ) ) {
+
+			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
+
+			if ( $param == 'sue_settings' && $action == 'sue_settings_ajax' ) {
+
+				$logo    = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
+				$title   = isset( $_REQUEST['title'] ) ? strip_tags( $_REQUEST['title'] ) : "";
+				$tagline = isset( $_REQUEST['tagline'] ) ? strip_tags( $_REQUEST['tagline'] ) : "";
+				$footer  = isset( $_REQUEST['footer'] ) ? strip_tags( $_REQUEST['footer'] ) : "";
+
+
+				// Validate inputs
+				$validation_message = [];
+
+				if ( ! empty( $logo ) && ! wp_http_validate_url( $logo ) ) {
+					$validation_message['logo'] = __( 'Please provide valid image URL..', "send-users-email" );
+				}
+
+				if ( ! empty( $title ) && ( strlen( $title ) <= 2 ) ) {
+					$validation_message['title'] = __( 'Please provide a bit more title.', "send-users-email" );
+				}
+
+				if ( ! empty( $tagline ) && ( strlen( $tagline ) <= 4 ) ) {
+					$validation_message['tagline'] = __( 'Please provide a bit more tagline.', "send-users-email" );
+				}
+
+				if ( ! empty( $footer ) && ( strlen( $footer ) <= 4 ) ) {
+					$validation_message['footer'] = __( 'Please provide a bit more footer content.', "send-users-email" );
+				}
+
+				// If validation fails send, error messages
+				if ( count( $validation_message ) > 0 ) {
+					wp_send_json( array( 'errors' => $validation_message, 'success' => false ), 422 );
+				}
+
+				// Check if current user is admin --- For now only administrator can send email
+				if ( current_user_can( 'administrator' ) ) {
+
+					$options = get_option( 'sue_send_users_email' );
+
+					if ( ! $options ) {
+						update_option( 'sue_send_users_email', [] );
+					}
+
+					$options = get_option( 'sue_send_users_email' );
+
+					$options['logo_url']      = $logo;
+					$options['email_title']   = $title;
+					$options['email_tagline'] = $tagline;
+					$options['email_footer']  = $footer;
+
+					update_option( 'sue_send_users_email', $options );
+
+					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
+
+				}
+
+			}
+
+		}
+
+		wp_send_json( array( 'message' => 'Permission Denied', 'success' => false ), 200 );
+	}
+
+	/**
+	 * Replace placeholder text to content
+	 */
+	private function replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email ) {
+		$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
+		$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
+		$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
+		$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
+
+		return $email_body;
 	}
 
 }

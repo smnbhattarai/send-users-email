@@ -177,6 +177,9 @@ class Send_Users_Email {
 		// Role email send progress
 		$this->loader->add_action( "wp_ajax_sue_email_roles_progress", $plugin_admin, 'handle_ajax_email_roles_progress' );
 
+		// Settings ajax handler
+		$this->loader->add_action( "wp_ajax_sue_settings_ajax", $plugin_admin, 'handle_ajax_admin_settings' );
+
 	}
 
 	/**

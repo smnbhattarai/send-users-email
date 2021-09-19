@@ -6,8 +6,6 @@
                 <div class="card-body">
                     <h5 class="card-title mb-5 text-uppercase"><?php echo __( 'Send email to selected users', 'send-users-email' ); ?></h5>
 
-                    <div class="sue-messages"></div>
-
                     <form action="javascript:void(0)" id="sue-users-email-form" method="post">
 
                         <div class="mb-4">
@@ -122,6 +120,9 @@
                             </td>
                         </tr>
                     </table>
+
+                    <div class="sue-messages"></div>
+
                 </div>
             </div>
         </div>
