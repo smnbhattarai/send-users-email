@@ -1,18 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link              http://sumanbhattarai.com.np
- * @since             1.0.0
- * @package           Send_Users_Email
- *
- * @wordpress-plugin
  * Plugin Name:       Send Users Email
  * Plugin URI:        https://sumanbhattarai.com.np
  * Description:       Easily send emails to your users. Select individual users or role to send the email.
@@ -32,14 +20,11 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
 define( 'SEND_USERS_EMAIL_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-send-users-email-activator.php
  */
 function activate_send_users_email() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-send-users-email-activator.php';
@@ -48,7 +33,6 @@ function activate_send_users_email() {
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-send-users-email-deactivator.php
  */
 function deactivate_send_users_email() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-send-users-email-deactivator.php';
@@ -66,12 +50,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-send-users-email.php';
 
 /**
  * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
  */
 function run_send_users_email() {
 

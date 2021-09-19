@@ -2,42 +2,11 @@
 
 /**
  * The admin-specific functionality of the plugin.
- *
- * @link       http://sumanbhattarai.com.np
- * @since      1.0.0
- *
- * @package    Send_Users_Email
- * @subpackage Send_Users_Email/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Send_Users_Email
- * @subpackage Send_Users_Email/admin
- * @author     Suman Bhattarai <smnbhattarai4@gmail.com>
  */
 class Send_Users_Email_Admin {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
 	private $plugin_name;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
-	 */
 	private $version;
 
 	/**
@@ -52,11 +21,6 @@ class Send_Users_Email_Admin {
 
 	/**
 	 * Initialize the class and set its properties.
-	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 *
-	 * @since    1.0.0
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -67,8 +31,6 @@ class Send_Users_Email_Admin {
 
 	/**
 	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
 		// Add css to this plugin page only
@@ -76,7 +38,6 @@ class Send_Users_Email_Admin {
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
 			wp_enqueue_style( 'sue-bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1', 'all' );
 			wp_enqueue_style( 'sue-bootstrap-5-datatable', plugin_dir_url( __FILE__ ) . 'css/dataTables.bootstrap5.min.css', array( 'sue-bootstrap-5' ), '1.11.2', 'all' );
-			wp_enqueue_style( 'sue-select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/send-users-email-admin.css', array(), $this->version, 'all' );
 		}
 
@@ -84,8 +45,6 @@ class Send_Users_Email_Admin {
 
 	/**
 	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
 		// Add JS to this plugin page only
@@ -93,7 +52,6 @@ class Send_Users_Email_Admin {
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
 			wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array( 'jquery' ), '5.1.1', true );
 			wp_enqueue_script( 'datatable-js', plugin_dir_url( __FILE__ ) . 'js/jquery.dataTables.min.js', array( 'jquery' ), '1.11.2', true );
-			wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), '1.11.1', true );
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/send-users-email-admin.js', array( 'jquery' ), $this->version, true );
 		}
 
@@ -190,7 +148,7 @@ class Send_Users_Email_Admin {
 	}
 
 	/**
-	 * Handles Ajax request to send user email selecting users
+	 * Handles request to send user email selecting users
 	 */
 	public function handle_ajax_admin_user_email() {
 
@@ -258,8 +216,8 @@ class Send_Users_Email_Admin {
 						$user_email   = $user->user_email;
 
 						$user_meta  = get_user_meta( $user->ID );
-						$first_name = isset( $user_meta['first_name'][0] ) ? $user_meta['first_name'][0] : '';
-						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
+						$first_name = $user_meta['first_name'][0] ?? '';
+						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
 						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );
@@ -386,8 +344,8 @@ class Send_Users_Email_Admin {
 						$user_email   = $user->user_email;
 
 						$user_meta  = get_user_meta( $user->ID );
-						$first_name = isset( $user_meta['first_name'][0] ) ? $user_meta['first_name'][0] : '';
-						$last_name  = isset( $user_meta['last_name'][0] ) ? $user_meta['last_name'][0] : '';
+						$first_name = $user_meta['first_name'][0] ?? '';
+						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
 						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );

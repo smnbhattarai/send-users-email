@@ -1,4 +1,5 @@
 <?php
+
 class Send_Users_Email_cleanup {
 
 	public static function cleanupUserEmailProgress() {
@@ -11,6 +12,7 @@ class Send_Users_Email_cleanup {
 		update_option( 'sue_send_users_email', $options );
 
 	}
+
 
 	public static function cleanupRoleEmailProgress() {
 
