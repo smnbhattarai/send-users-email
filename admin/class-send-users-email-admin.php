@@ -71,7 +71,7 @@ class Send_Users_Email_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-// Add css to this plugin page only
+		// Add css to this plugin page only
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
 			wp_enqueue_style( 'sue-bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1', 'all' );
@@ -88,7 +88,7 @@ class Send_Users_Email_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-// Add JS to this plugin page only
+		// Add JS to this plugin page only
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
 			wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array( 'jquery' ), '5.1.1', true );
@@ -106,7 +106,7 @@ class Send_Users_Email_Admin {
 	public function admin_menu() {
 
 		add_menu_page( __( "Send Users Email", "send-users-email" ),
-			__( "Send Users Email", "send-users-email" ),
+			__( "Email to users", "send-users-email" ),
 			'manage_options',
 			'send-users-email',
 			[ $this, 'admin_dashboard' ],
@@ -267,7 +267,6 @@ class Send_Users_Email_Admin {
 						// Send email
 						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
 						$email_template = $this->email_template( $email_body );
-						sleep( 2 );
 						wp_mail( $user_email, $subject, $email_template, $headers );
 
 						$email_body     = '';
@@ -283,7 +282,6 @@ class Send_Users_Email_Admin {
 					Send_Users_Email_cleanup::cleanupUserEmailProgress();
 
 					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
-					die();
 
 				}
 
@@ -397,8 +395,7 @@ class Send_Users_Email_Admin {
 						// Send email
 						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
 						$email_template = $this->email_template( $email_body );
-						sleep( 2 );
-						//wp_mail( $user_email, $subject, $email_template, $headers );
+						wp_mail( $user_email, $subject, $email_template, $headers );
 
 						$email_body     = '';
 						$email_template = '';
@@ -413,7 +410,6 @@ class Send_Users_Email_Admin {
 					Send_Users_Email_cleanup::cleanupRoleEmailProgress();
 
 					wp_send_json( array( 'message' => 'success', 'success' => true ), 200 );
-					die();
 
 				}
 
@@ -542,9 +538,8 @@ class Send_Users_Email_Admin {
 		$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
 		$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
 		$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
-		$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
 
-		return $email_body;
+		return str_replace( '{{user_email}}', $user_email, $email_body );
 	}
 
 }
