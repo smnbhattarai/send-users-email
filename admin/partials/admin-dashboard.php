@@ -40,6 +40,16 @@
                     <p class="card-text"><?php echo __( 'Send email to users by selecting individual users or bulk send emails using roles.', 'send-users-email' ); ?></p>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="text-uppercase mb-4"><?php echo __("Please don't SPAM", 'send-users-email'); ?></h5>
+                        <p><?php echo __("You don't like spam, I don't like spam, nobody likes spam.", 'send-users-email'); ?></p>
+                        <p><?php echo __("Please be responsible and don't spam your users.", 'send-users-email'); ?></p>
+                        <p><strong><?php echo __("With great power comes great responsibility.", 'send-users-email'); ?></strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

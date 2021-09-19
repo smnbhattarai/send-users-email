@@ -496,8 +496,9 @@ class Send_Users_Email_Admin {
 		$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
 		$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
 		$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
+		$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
 
-		return str_replace( '{{user_email}}', $user_email, $email_body );
+		return nl2br($email_body);
 	}
 
 }
