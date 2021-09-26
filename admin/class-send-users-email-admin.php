@@ -158,9 +158,10 @@ class Send_Users_Email_Admin {
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
 
 			if ( $param == 'send_email_user' && $action == 'sue_user_email_ajax' ) {
-				$subject = isset( $_REQUEST['subject'] ) ? strip_tags( $_REQUEST['subject'] ) : "";
+				$subject = isset( $_REQUEST['subject'] ) ? sanitize_text_field( $_REQUEST['subject'] ) : "";
 				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
 				$users   = $_REQUEST['users'] ?? [];
+				$users = array_map( 'sanitize_text_field', $users );
 
 				// Validate inputs
 				$validation_message = [];
@@ -285,9 +286,10 @@ class Send_Users_Email_Admin {
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
 
 			if ( $param == 'send_email_role' && $action == 'sue_role_email_ajax' ) {
-				$subject = isset( $_REQUEST['subject'] ) ? strip_tags( $_REQUEST['subject'] ) : "";
+				$subject = isset( $_REQUEST['subject'] ) ? sanitize_text_field( $_REQUEST['subject'] ) : "";
 				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
 				$roles   = $_REQUEST['roles'] ?? [];
+				$roles = array_map( 'sanitize_text_field', $roles );
 
 				// Validate inputs
 				$validation_message = [];
@@ -431,9 +433,9 @@ class Send_Users_Email_Admin {
 			if ( $param == 'sue_settings' && $action == 'sue_settings_ajax' ) {
 
 				$logo    = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
-				$title   = isset( $_REQUEST['title'] ) ? strip_tags( $_REQUEST['title'] ) : "";
-				$tagline = isset( $_REQUEST['tagline'] ) ? strip_tags( $_REQUEST['tagline'] ) : "";
-				$footer  = isset( $_REQUEST['footer'] ) ? strip_tags( $_REQUEST['footer'] ) : "";
+				$title   = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : "";
+				$tagline = isset( $_REQUEST['tagline'] ) ? sanitize_text_field( $_REQUEST['tagline'] ) : "";
+				$footer  = isset( $_REQUEST['footer'] ) ? sanitize_text_field( $_REQUEST['footer'] ) : "";
 
 
 				// Validate inputs

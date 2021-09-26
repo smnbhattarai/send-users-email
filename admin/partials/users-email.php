@@ -33,9 +33,9 @@
                                         <tr>
                                             <td><input type="checkbox" class="sueUserCheck" name="users[]"
                                                        value="<?php echo $user->ID; ?>"></td>
-                                            <td><?php echo $user->ID; ?></td>
-                                            <td><?php echo $user->display_name; ?></td>
-                                            <td><?php echo $user->user_email; ?></td>
+                                            <td><?php echo esc_html($user->ID); ?></td>
+                                            <td><?php echo esc_html($user->display_name); ?></td>
+                                            <td><?php echo esc_html($user->user_email); ?></td>
                                         </tr>
 									<?php endforeach; ?>
                                     </tbody>

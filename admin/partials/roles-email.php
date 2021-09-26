@@ -17,27 +17,29 @@
 
                         <div class="mb-4">
                             <div class="sue-role-email-list">
-                            <label class="form-label"><?php echo __( 'Select Role(s)', 'send-users-email' ); ?></label>
-                            <ul class="list-group">
-								<?php foreach ( $roles as $slug => $user_count ): ?>
-									<?php if ( $user_count ): ?>
+                                <label class="form-label"><?php echo __( 'Select Role(s)', 'send-users-email' ); ?></label>
+                                <ul class="list-group">
+									<?php foreach ( $roles as $slug => $user_count ): ?>
+										<?php if ( $user_count ): ?>
 
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input roleCheckbox" name="roles[]" type="checkbox"
-                                                       value="<?php echo esc_attr( $slug ); ?>"
-                                                       id="<?php echo esc_attr( $slug ); ?>"
-                                                       style="margin-top: 7px;">
-                                                <label class="form-check-label" for="<?php echo esc_attr( $slug ); ?>">
-													<?php echo ucfirst( $slug ); ?>
-                                                </label>
-                                            </div>
-                                            <span class="badge bg-primary rounded-pill"><?php echo $user_count; ?></span>
-                                        </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input roleCheckbox" name="roles[]"
+                                                           type="checkbox"
+                                                           value="<?php echo esc_attr( $slug ); ?>"
+                                                           id="<?php echo esc_attr( $slug ); ?>"
+                                                           style="margin-top: 7px;">
+                                                    <label class="form-check-label"
+                                                           for="<?php echo esc_attr( $slug ); ?>">
+														<?php echo ucfirst( esc_html( $slug ) ); ?>
+                                                    </label>
+                                                </div>
+                                                <span class="badge bg-primary rounded-pill"><?php echo $user_count; ?></span>
+                                            </li>
 
-									<?php endif; ?>
-								<?php endforeach; ?>
-                            </ul>
+										<?php endif; ?>
+									<?php endforeach; ?>
+                                </ul>
                             </div>
                         </div>
 
