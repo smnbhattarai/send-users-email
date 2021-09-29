@@ -34,7 +34,7 @@
 														<?php echo ucfirst( esc_html( $slug ) ); ?>
                                                     </label>
                                                 </div>
-                                                <span class="badge bg-primary rounded-pill"><?php echo $user_count; ?></span>
+                                                <span class="badge bg-primary rounded-pill"><?php echo esc_html($user_count); ?></span>
                                             </li>
 
 										<?php endif; ?>

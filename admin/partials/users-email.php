@@ -32,7 +32,7 @@
 									<?php foreach ( $blog_users as $user ): ?>
                                         <tr>
                                             <td><input type="checkbox" class="sueUserCheck" name="users[]"
-                                                       value="<?php echo $user->ID; ?>"></td>
+                                                       value="<?php echo esc_html($user->ID); ?>"></td>
                                             <td><?php echo esc_html($user->ID); ?></td>
                                             <td><?php echo esc_html($user->display_name); ?></td>
                                             <td><?php echo esc_html($user->user_email); ?></td>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="col-md-2 mt-2">
                                 <div class="spinner-border text-info sue-spinner" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                                    <span class="visually-hidden"><?php echo __('Loading...', 'send-users-email'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-7 mt-2">

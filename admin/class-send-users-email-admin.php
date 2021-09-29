@@ -214,7 +214,7 @@ class Send_Users_Email_Admin {
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
 						$display_name = $user->display_name;
-						$user_email   = $user->user_email;
+						$user_email   = sanitize_email($user->user_email);
 
 						$user_meta  = get_user_meta( $user->ID );
 						$first_name = $user_meta['first_name'][0] ?? '';
@@ -343,7 +343,7 @@ class Send_Users_Email_Admin {
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
 						$display_name = $user->display_name;
-						$user_email   = $user->user_email;
+						$user_email   = sanitize_email($user->user_email);
 
 						$user_meta  = get_user_meta( $user->ID );
 						$first_name = $user_meta['first_name'][0] ?? '';

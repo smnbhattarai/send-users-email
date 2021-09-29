@@ -19,8 +19,8 @@
                                              class="form-text"><?php echo __( 'Add email header logo URL here. If left blank, logo will not be used.', 'send-users-email' ) ?></div>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="logo" name="logo" value="<?php echo $logo; ?>"
-                                               placeholder="<?php bloginfo( 'url' ); ?>/wp-content/uploads/logo.png"
+                                        <input type="text" class="form-control" id="logo" name="logo" value="<?php echo esc_url_raw($logo); ?>"
+                                               placeholder="<?php echo __('Add your logo URL', 'send-users-email'); ?>"
                                                aria-describedby="logoHelp">
                                     </td>
                                 </tr>
@@ -31,7 +31,7 @@
                                              class="form-text"><?php echo __( 'This value will be shown below logo image.', 'send-users-email' ) ?></div>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="title" name="title" value="<?php echo $title; ?>"
+                                        <input type="text" class="form-control" id="title" name="title" value="<?php echo wp_strip_all_tags($title); ?>"
                                                placeholder="<?php bloginfo( 'name' ); ?>"
                                                aria-describedby="titleHelp">
                                     </td>
@@ -43,7 +43,7 @@
                                              class="form-text"><?php echo __( 'This value will be shown below email title image.', 'send-users-email' ) ?></div>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="tagline" name="tagline" value="<?php echo $tagline; ?>"
+                                        <input type="text" class="form-control" id="tagline" name="tagline" value="<?php echo wp_strip_all_tags($tagline); ?>"
                                                placeholder="<?php bloginfo( 'description' ); ?>"
                                                aria-describedby="taglineHelp">
                                     </td>
@@ -55,7 +55,7 @@
                                              class="form-text"><?php echo __( 'Email footer content will be added to all emails at footer part of email.', 'send-users-email' ) ?></div>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="footer" name="footer" value="<?php echo $footer; ?>"
+                                        <input type="text" class="form-control" id="footer" name="footer" value="<?php echo wp_strip_all_tags($footer); ?>"
                                                placeholder="Email footer content"
                                                aria-describedby="footerHelp">
                                     </td>
@@ -63,7 +63,7 @@
                                 <tr>
                                     <td>
                                         <div class="spinner-border text-info sue-spinner" role="status">
-                                            <span class="visually-hidden">Loading...</span>
+                                            <span class="visually-hidden"><?php echo __('Loading...', 'send-users-email') ?></span>
                                         </div>
                                         <input type="hidden" id="_wpnonce" name="_wpnonce"
                                                value="<?php echo wp_create_nonce( 'sue-email-user' ); ?>"/></td>
