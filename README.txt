@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Send Users Email ===
 Contributors: metalfreek
 Donate link: http://sumanbhattarai.com.np
 Tags: email, email users, email roles, send email
@@ -15,9 +15,9 @@ Send user email plugin helps administrators to send email to their system users 
 
 Send user email allows you to easily send email by selecting individual user(s) or send bulk messages using role(s).
 
-This plugin has a very simple interface with minimal features so that you can just send simple emails without having to fiddle around with hundred of settings.
+This plugin has a very simple interface with minimal features so that you can just send simple emails without having to fiddle around with tons of settings.
 
-This plugin uses `wp_mail` function to send emails.
+This plugin uses `wp_mail` function to send emails. Any other E-Mail plugin that tap on `wp_mail` functions works with this plugin.
 
 == Installation ==
 
