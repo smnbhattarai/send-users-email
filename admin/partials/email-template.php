@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var $logo
+ * @var $title
+ * @var $tagline
+ * @var $email_body
+ * @var $footer
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,11 +27,11 @@
         <tr>
             <td style="text-align: center; padding: 15px 0;">
 				<?php if ( $title ): ?>
-                    <h2 style="margin-bottom: 5px;"><?php echo esc_html( $title ); ?></h2>
+                    <h2 style="margin-bottom: 5px;"><?php echo stripslashes_deep( esc_html( $title ) ); ?></h2>
 				<?php endif; ?>
 
 				<?php if ( $tagline ): ?>
-                    <h5 style="margin-top: 5px;"><?php echo esc_html( $tagline ); ?></h5>
+                    <h5 style="margin-top: 5px;"><?php echo stripslashes_deep( esc_html( $tagline ) ); ?></h5>
 				<?php endif; ?>
             </td>
         </tr>
@@ -37,7 +46,7 @@
 	<?php if ( $footer ): ?>
         <tr>
             <td style="text-align: center; padding: 15px 0; font-size: 0.9em;">
-				<?php echo esc_html($footer); ?>
+				<?php echo stripslashes_deep( esc_html( $footer ) ); ?>
             </td>
         </tr>
 	<?php endif; ?>

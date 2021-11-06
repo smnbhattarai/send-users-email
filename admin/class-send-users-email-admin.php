@@ -161,7 +161,7 @@ class Send_Users_Email_Admin {
 				$subject = isset( $_REQUEST['subject'] ) ? sanitize_text_field( $_REQUEST['subject'] ) : "";
 				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
 				$users   = $_REQUEST['users'] ?? [];
-				$users = array_map( 'sanitize_text_field', $users );
+				$users   = array_map( 'sanitize_text_field', $users );
 
 				// Validate inputs
 				$validation_message = [];
@@ -214,7 +214,7 @@ class Send_Users_Email_Admin {
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
 						$display_name = $user->display_name;
-						$user_email   = sanitize_email($user->user_email);
+						$user_email   = sanitize_email( $user->user_email );
 
 						$user_meta  = get_user_meta( $user->ID );
 						$first_name = $user_meta['first_name'][0] ?? '';
@@ -289,7 +289,7 @@ class Send_Users_Email_Admin {
 				$subject = isset( $_REQUEST['subject'] ) ? sanitize_text_field( $_REQUEST['subject'] ) : "";
 				$message = isset( $_REQUEST['sue_user_email_message'] ) ? wp_kses_post( $_REQUEST['sue_user_email_message'] ) : "";
 				$roles   = $_REQUEST['roles'] ?? [];
-				$roles = array_map( 'sanitize_text_field', $roles );
+				$roles   = array_map( 'sanitize_text_field', $roles );
 
 				// Validate inputs
 				$validation_message = [];
@@ -343,7 +343,7 @@ class Send_Users_Email_Admin {
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
 						$display_name = $user->display_name;
-						$user_email   = sanitize_email($user->user_email);
+						$user_email   = sanitize_email( $user->user_email );
 
 						$user_meta  = get_user_meta( $user->ID );
 						$first_name = $user_meta['first_name'][0] ?? '';
@@ -473,10 +473,10 @@ class Send_Users_Email_Admin {
 
 					$options = get_option( 'sue_send_users_email' );
 
-					$options['logo_url']      = $logo;
-					$options['email_title']   = $title;
-					$options['email_tagline'] = $tagline;
-					$options['email_footer']  = $footer;
+					$options['logo_url']      = esc_url_raw( $logo );
+					$options['email_title']   = stripslashes_deep( wp_strip_all_tags( $title ) );
+					$options['email_tagline'] = stripslashes_deep( wp_strip_all_tags( $tagline ) );
+					$options['email_footer']  = stripslashes_deep( wp_strip_all_tags( $footer ) );
 
 					update_option( 'sue_send_users_email', $options );
 
@@ -500,7 +500,7 @@ class Send_Users_Email_Admin {
 		$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
 		$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
 
-		return nl2br($email_body);
+		return nl2br( $email_body );
 	}
 
 }
