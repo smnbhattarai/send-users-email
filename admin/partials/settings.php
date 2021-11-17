@@ -2,7 +2,7 @@
     <div class="row sue-row">
 
         <div class="col-sm-9">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title mb-5 text-uppercase"><?php echo __( 'Settings', 'send-users-email' ); ?></h5>
 
@@ -83,7 +83,7 @@
         </div>
 
         <div class="col-sm-3">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'Instruction', 'send-users-email' ); ?></h5>
                     <p class="card-text"><?php echo __( 'Please configure email settings before sending emails.', 'send-users-email' ); ?></p>
