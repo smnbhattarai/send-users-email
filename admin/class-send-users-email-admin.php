@@ -208,11 +208,12 @@ class Send_Users_Email_Admin {
 
 					$user_details = get_users( [
 						'include' => $users,
-						'fields'  => [ 'ID', 'display_name', 'user_email' ]
+						'fields'  => [ 'ID', 'display_name', 'user_email', 'user_login' ]
 					] );
 
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
+						$username = $user->user_login;
 						$display_name = $user->display_name;
 						$user_email   = sanitize_email( $user->user_email );
 
@@ -221,7 +222,7 @@ class Send_Users_Email_Admin {
 						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
-						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );
+						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email );
 
 						// Send email
 						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
@@ -342,6 +343,7 @@ class Send_Users_Email_Admin {
 
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
+						$username = $user->username;
 						$display_name = $user->display_name;
 						$user_email   = sanitize_email( $user->user_email );
 
@@ -350,7 +352,7 @@ class Send_Users_Email_Admin {
 						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
-						$email_body = $this->replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email );
+						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email );
 
 						// Send email
 						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
@@ -494,7 +496,8 @@ class Send_Users_Email_Admin {
 	/**
 	 * Replace placeholder text to content
 	 */
-	private function replace_placeholder( $email_body, $display_name, $first_name, $last_name, $user_email ) {
+	private function replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email ) {
+		$email_body = str_replace( '{{username}}', $username, $email_body );
 		$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
 		$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
 		$email_body = str_replace( '{{user_last_name}}', $last_name, $email_body );
