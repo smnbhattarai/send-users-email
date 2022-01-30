@@ -36,9 +36,13 @@ class Send_Users_Email_Admin {
 		// Add css to this plugin page only
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
-			wp_enqueue_style( 'sue-bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1', 'all' );
-			wp_enqueue_style( 'sue-bootstrap-5-datatable', plugin_dir_url( __FILE__ ) . 'css/dataTables.bootstrap5.min.css', array( 'sue-bootstrap-5' ), '1.11.2', 'all' );
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/send-users-email-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'sue-bootstrap-5', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), '5.1.1',
+				'all' );
+			wp_enqueue_style( 'sue-bootstrap-5-datatable',
+				plugin_dir_url( __FILE__ ) . 'css/dataTables.bootstrap5.min.css', array( 'sue-bootstrap-5' ), '1.11.2',
+				'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/send-users-email-admin.css',
+				array(), $this->version, 'all' );
 		}
 
 	}
@@ -50,9 +54,12 @@ class Send_Users_Email_Admin {
 		// Add JS to this plugin page only
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : "";
 		if ( in_array( $page, $this->plugin_pages_slug ) ) {
-			wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array( 'jquery' ), '5.1.1', true );
-			wp_enqueue_script( 'datatable-js', plugin_dir_url( __FILE__ ) . 'js/jquery.dataTables.min.js', array( 'jquery' ), '1.11.2', true );
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/send-users-email-admin.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js',
+				array( 'jquery' ), '5.1.1', true );
+			wp_enqueue_script( 'datatable-js', plugin_dir_url( __FILE__ ) . 'js/jquery.dataTables.min.js',
+				array( 'jquery' ), '1.11.2', true );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/send-users-email-admin.js',
+				array( 'jquery' ), $this->version, true );
 		}
 
 	}
@@ -139,11 +146,14 @@ class Send_Users_Email_Admin {
 	 * Settings page
 	 */
 	public function settings() {
-		$options = get_option( 'sue_send_users_email' );
-		$logo    = $options['logo_url'] ?? '';
-		$title   = $options['email_title'] ?? '';
-		$tagline = $options['email_tagline'] ?? '';
-		$footer  = $options['email_footer'] ?? '';
+		$options            = get_option( 'sue_send_users_email' );
+		$logo               = $options['logo_url'] ?? '';
+		$title              = $options['email_title'] ?? '';
+		$tagline            = $options['email_tagline'] ?? '';
+		$footer             = $options['email_footer'] ?? '';
+		$email_from_name    = $options['email_from_name'] ?? '';
+		$email_from_address = $options['email_from_address'] ?? '';
+		$reply_to_address   = $options['reply_to_address'] ?? '';
 		require_once 'partials/settings.php';
 	}
 
@@ -167,7 +177,8 @@ class Send_Users_Email_Admin {
 				$validation_message = [];
 
 				if ( empty( $subject ) || strlen( $subject ) < 2 || strlen( $subject ) > 200 ) {
-					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.', "send-users-email" );
+					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.',
+						"send-users-email" );
 				}
 
 				if ( empty( $message ) ) {
@@ -211,9 +222,12 @@ class Send_Users_Email_Admin {
 						'fields'  => [ 'ID', 'display_name', 'user_email', 'user_login' ]
 					] );
 
+					// Email header setup
+					$headers = $this->get_email_headers();
+
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
-						$username = $user->user_login;
+						$username     = $user->user_login;
 						$display_name = $user->display_name;
 						$user_email   = sanitize_email( $user->user_email );
 
@@ -222,10 +236,10 @@ class Send_Users_Email_Admin {
 						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
-						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email );
+						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name,
+							$last_name, $user_email );
 
 						// Send email
-						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
 						$email_template = $this->email_template( $email_body );
 						wp_mail( $user_email, $subject, $email_template, $headers );
 
@@ -296,7 +310,8 @@ class Send_Users_Email_Admin {
 				$validation_message = [];
 
 				if ( empty( $subject ) || strlen( $subject ) < 2 || strlen( $subject ) > 200 ) {
-					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.', "send-users-email" );
+					$validation_message['subject'] = __( 'Subject is required and should be between 2 and 200 characters.',
+						"send-users-email" );
 				}
 
 				if ( empty( $message ) ) {
@@ -341,9 +356,12 @@ class Send_Users_Email_Admin {
 
 					update_option( 'sue_send_users_email', $options );
 
+					// Email header setup
+					$headers = $this->get_email_headers();
+
 					foreach ( $user_details as $user ) {
 						$email_body   = $message;
-						$username = $user->username;
+						$username     = $user->username;
 						$display_name = $user->display_name;
 						$user_email   = sanitize_email( $user->user_email );
 
@@ -352,10 +370,10 @@ class Send_Users_Email_Admin {
 						$last_name  = $user_meta['last_name'][0] ?? '';
 
 						// Replace placeholder with user content
-						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email );
+						$email_body = $this->replace_placeholder( $email_body, $username, $display_name, $first_name,
+							$last_name, $user_email );
 
 						// Send email
-						$headers        = [ 'Content-Type: text/html; charset=UTF-8' ];
 						$email_template = $this->email_template( $email_body );
 						wp_mail( $user_email, $subject, $email_template, $headers );
 
@@ -434,10 +452,13 @@ class Send_Users_Email_Admin {
 
 			if ( $param == 'sue_settings' && $action == 'sue_settings_ajax' ) {
 
-				$logo    = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
-				$title   = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : "";
-				$tagline = isset( $_REQUEST['tagline'] ) ? sanitize_text_field( $_REQUEST['tagline'] ) : "";
-				$footer  = isset( $_REQUEST['footer'] ) ? sanitize_text_field( $_REQUEST['footer'] ) : "";
+				$logo               = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
+				$title              = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : "";
+				$tagline            = isset( $_REQUEST['tagline'] ) ? sanitize_text_field( $_REQUEST['tagline'] ) : "";
+				$footer             = isset( $_REQUEST['footer'] ) ? sanitize_text_field( $_REQUEST['footer'] ) : "";
+				$email_from_name    = isset( $_REQUEST['email_from_name'] ) ? sanitize_text_field( $_REQUEST['email_from_name'] ) : "";
+				$email_from_address = isset( $_REQUEST['email_from_address'] ) ? sanitize_text_field( $_REQUEST['email_from_address'] ) : "";
+				$reply_to_address   = isset( $_REQUEST['reply_to_address'] ) ? sanitize_text_field( $_REQUEST['reply_to_address'] ) : "";
 
 
 				// Validate inputs
@@ -456,7 +477,23 @@ class Send_Users_Email_Admin {
 				}
 
 				if ( ! empty( $footer ) && ( strlen( $footer ) <= 4 ) ) {
-					$validation_message['footer'] = __( 'Please provide a bit more footer content.', "send-users-email" );
+					$validation_message['footer'] = __( 'Please provide a bit more footer content.',
+						"send-users-email" );
+				}
+
+				if ( ! empty( $email_from_name ) && ( strlen( $email_from_name ) <= 2 ) ) {
+					$validation_message['email_from_name'] = __( 'Please provide a bit more email from Name.',
+						"send-users-email" );
+				}
+
+				if ( ! empty( $email_from_address ) && ! filter_var( $email_from_address, FILTER_VALIDATE_EMAIL ) ) {
+					$validation_message['email_from_address'] = __( 'Please provide a valid email from address.',
+						"send-users-email" );
+				}
+
+				if ( ! empty( $reply_to_address ) && ! filter_var( $reply_to_address, FILTER_VALIDATE_EMAIL ) ) {
+					$validation_message['reply_to_address'] = __( 'Please provide a valid reply to address.',
+						"send-users-email" );
 				}
 
 				// If validation fails send, error messages
@@ -475,10 +512,13 @@ class Send_Users_Email_Admin {
 
 					$options = get_option( 'sue_send_users_email' );
 
-					$options['logo_url']      = esc_url_raw( $logo );
-					$options['email_title']   = stripslashes_deep( wp_strip_all_tags( $title ) );
-					$options['email_tagline'] = stripslashes_deep( wp_strip_all_tags( $tagline ) );
-					$options['email_footer']  = stripslashes_deep( wp_strip_all_tags( $footer ) );
+					$options['logo_url']           = esc_url_raw( $logo );
+					$options['email_title']        = stripslashes_deep( wp_strip_all_tags( $title ) );
+					$options['email_tagline']      = stripslashes_deep( wp_strip_all_tags( $tagline ) );
+					$options['email_footer']       = stripslashes_deep( wp_strip_all_tags( $footer ) );
+					$options['email_from_name']    = stripslashes_deep( wp_strip_all_tags( $email_from_name ) );
+					$options['email_from_address'] = stripslashes_deep( wp_strip_all_tags( $email_from_address ) );
+					$options['reply_to_address']   = stripslashes_deep( wp_strip_all_tags( $reply_to_address ) );
 
 					update_option( 'sue_send_users_email', $options );
 
@@ -496,7 +536,14 @@ class Send_Users_Email_Admin {
 	/**
 	 * Replace placeholder text to content
 	 */
-	private function replace_placeholder( $email_body, $username, $display_name, $first_name, $last_name, $user_email ) {
+	private function replace_placeholder(
+		$email_body,
+		$username,
+		$display_name,
+		$first_name,
+		$last_name,
+		$user_email
+	) {
 		$email_body = str_replace( '{{username}}', $username, $email_body );
 		$email_body = str_replace( '{{user_display_name}}', $display_name, $email_body );
 		$email_body = str_replace( '{{user_first_name}}', $first_name, $email_body );
@@ -504,6 +551,28 @@ class Send_Users_Email_Admin {
 		$email_body = str_replace( '{{user_email}}', $user_email, $email_body );
 
 		return nl2br( $email_body );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function get_email_headers() {
+		$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+		$options            = get_option( 'sue_send_users_email' );
+		$email_from_name    = $options['email_from_name'] ?? '';
+		$email_from_address = $options['email_from_address'] ?? '';
+		$reply_to_address   = $options['reply_to_address'] ?? '';
+
+		if ( ! empty( $email_from_name ) && ! empty( $email_from_address ) ) {
+			$headers[] = "From: $email_from_name <$email_from_address>";
+		}
+
+		if ( ! empty( $email_from_name ) && ! empty( $reply_to_address ) ) {
+			$headers[] = "Reply-To: $email_from_name <$reply_to_address>";
+		}
+
+		return $headers;
 	}
 
 }
