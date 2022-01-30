@@ -5,7 +5,7 @@
 		<table class="table table-borderless">
 			<tr>
 				<td>
-					{{username}}<br>
+                    {{username}}<br>
 					<?php echo __( 'Use this placeholder to display username', 'send-users-email' ); ?>
 				</td>
 			</tr>

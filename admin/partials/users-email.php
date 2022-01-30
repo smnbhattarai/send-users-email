@@ -87,7 +87,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'Instruction', 'send-users-email' ); ?></h5>
-                    <p class="card-text"><?php echo __( 'Send email to individual users by selecting them from the user list..', 'send-users-email' ); ?></p>
+                    <p class="card-text"><?php echo __( 'Send email to individual users by selecting them from the user list.', 'send-users-email' ); ?></p>
                 </div>
             </div>
 

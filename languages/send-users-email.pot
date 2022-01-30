@@ -1,21 +1,21 @@
-# Copyright (C) 2021 Suman Bhattarai
+# Copyright (C) 2022 Suman Bhattarai
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Send Users Email 1.0.1\n"
+"Project-Id-Version: Send Users Email 1.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/send-users-email\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-19T18:04:46+00:00\n"
+"POT-Creation-Date: 2022-01-30T15:58:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: send-users-email\n"
 
 #. Plugin Name of the plugin
-#: admin/class-send-users-email-admin.php:66
+#: admin/class-send-users-email-admin.php:73
 msgid "Send Users Email"
 msgstr ""
 
@@ -35,64 +35,76 @@ msgstr ""
 msgid "http://sumanbhattarai.com.np"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:67
+#: admin/class-send-users-email-admin.php:74
 msgid "Email to users"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:76
-#: admin/class-send-users-email-admin.php:77
+#: admin/class-send-users-email-admin.php:83
+#: admin/class-send-users-email-admin.php:84
 #: admin/partials/admin-dashboard.php:7
 msgid "Dashboard"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:85
-#: admin/class-send-users-email-admin.php:86
+#: admin/class-send-users-email-admin.php:92
+#: admin/class-send-users-email-admin.php:93
 msgid "Email Users"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:94
-#: admin/class-send-users-email-admin.php:95
+#: admin/class-send-users-email-admin.php:101
+#: admin/class-send-users-email-admin.php:102
 msgid "Email Roles"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:103
-#: admin/class-send-users-email-admin.php:104
+#: admin/class-send-users-email-admin.php:110
+#: admin/class-send-users-email-admin.php:111
 #: admin/partials/settings.php:7
 msgid "Settings"
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:169
-#: admin/class-send-users-email-admin.php:296
+#: admin/class-send-users-email-admin.php:180
+#: admin/class-send-users-email-admin.php:313
 msgid "Subject is required and should be between 2 and 200 characters."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:173
-#: admin/class-send-users-email-admin.php:300
+#: admin/class-send-users-email-admin.php:185
+#: admin/class-send-users-email-admin.php:318
 msgid "Please provide email content."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:177
+#: admin/class-send-users-email-admin.php:189
 msgid "Please select users."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:304
+#: admin/class-send-users-email-admin.php:322
 msgid "Please select role(s)."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:443
+#: admin/class-send-users-email-admin.php:468
 msgid "Please provide valid image URL.."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:447
+#: admin/class-send-users-email-admin.php:472
 msgid "Please provide a bit more title."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:451
+#: admin/class-send-users-email-admin.php:476
 msgid "Please provide a bit more tagline."
 msgstr ""
 
-#: admin/class-send-users-email-admin.php:455
+#: admin/class-send-users-email-admin.php:480
 msgid "Please provide a bit more footer content."
+msgstr ""
+
+#: admin/class-send-users-email-admin.php:485
+msgid "Please provide a bit more email from Name."
+msgstr ""
+
+#: admin/class-send-users-email-admin.php:490
+msgid "Please provide a valid email from address."
+msgstr ""
+
+#: admin/class-send-users-email-admin.php:495
+msgid "Please provide a valid reply to address."
 msgstr ""
 
 #: admin/partials/admin-dashboard.php:12
@@ -123,7 +135,7 @@ msgstr ""
 msgid "Please be responsible and don't spam your users."
 msgstr ""
 
-#: admin/partials/admin-dashboard.php:49
+#: admin/partials/admin-dashboard.php:50
 msgid "With great power comes great responsibility."
 msgstr ""
 
@@ -145,86 +157,153 @@ msgstr ""
 msgid "Select Role(s)"
 msgstr ""
 
-#: admin/partials/roles-email.php:46
+#: admin/partials/roles-email.php:48
 #: admin/partials/users-email.php:48
 msgid "Email Message"
 msgstr ""
 
-#: admin/partials/roles-email.php:62
+#: admin/partials/roles-email.php:64
 #: admin/partials/users-email.php:64
 msgid "Send Message"
 msgstr ""
 
-#: admin/partials/roles-email.php:89
-#: admin/partials/settings.php:88
+#: admin/partials/roles-email.php:91
+#: admin/partials/settings.php:155
 #: admin/partials/users-email.php:89
 msgid "Instruction"
 msgstr ""
 
-#: admin/partials/roles-email.php:90
+#: admin/partials/roles-email.php:92
 msgid "Send email to all users belonging to selected roles."
 msgstr ""
 
-#: admin/partials/roles-email.php:95
-#: admin/partials/users-email.php:95
-msgid "Placeholder"
+#: admin/partials/settings.php:17
+msgid "Logo URL"
 msgstr ""
 
-#: admin/partials/roles-email.php:96
-#: admin/partials/users-email.php:96
-msgid "You can use following placeholder to replace user detail on email."
-msgstr ""
-
-#: admin/partials/roles-email.php:101
-#: admin/partials/users-email.php:101
-msgid "Use this placeholder to display user display name"
-msgstr ""
-
-#: admin/partials/roles-email.php:107
-#: admin/partials/users-email.php:107
-msgid "Use this placeholder to display user first name"
-msgstr ""
-
-#: admin/partials/roles-email.php:113
-#: admin/partials/users-email.php:113
-msgid "Use this placeholder to display user last name"
-msgstr ""
-
-#: admin/partials/roles-email.php:119
-#: admin/partials/users-email.php:119
-msgid "Use this placeholder to display user email"
-msgstr ""
-
-#: admin/partials/settings.php:19
+#: admin/partials/settings.php:20
 msgid "Add email header logo URL here. If left blank, logo will not be used."
 msgstr ""
 
-#: admin/partials/settings.php:31
+#: admin/partials/settings.php:26
+msgid "Add your logo URL"
+msgstr ""
+
+#: admin/partials/settings.php:33
+msgid "Email Title"
+msgstr ""
+
+#: admin/partials/settings.php:36
 msgid "This value will be shown below logo image."
 msgstr ""
 
-#: admin/partials/settings.php:43
+#: admin/partials/settings.php:48
+msgid "Email Tagline"
+msgstr ""
+
+#: admin/partials/settings.php:51
 msgid "This value will be shown below email title image."
 msgstr ""
 
-#: admin/partials/settings.php:55
+#: admin/partials/settings.php:63
+msgid "Email Footer"
+msgstr ""
+
+#: admin/partials/settings.php:66
 msgid "Email footer content will be added to all emails at footer part of email."
 msgstr ""
 
 #: admin/partials/settings.php:72
-msgid "Save Settings"
+msgid "Email footer content"
 msgstr ""
 
-#: admin/partials/settings.php:89
-msgid "Please configure email settings before sending emails."
+#: admin/partials/settings.php:80
+msgid "Email From/Reply-To Name"
+msgstr ""
+
+#: admin/partials/settings.php:83
+msgid "Email from/reply-to name to use in send emails."
 msgstr ""
 
 #: admin/partials/settings.php:90
+msgid "Email from Name"
+msgstr ""
+
+#: admin/partials/settings.php:97
+msgid "Email From Address"
+msgstr ""
+
+#: admin/partials/settings.php:100
+msgid "Email from address to use in send emails."
+msgstr ""
+
+#: admin/partials/settings.php:114
+msgid "Reply To Address"
+msgstr ""
+
+#: admin/partials/settings.php:117
+msgid "Reply To address to use."
+msgstr ""
+
+#: admin/partials/settings.php:131
+#: admin/partials/users-email.php:70
+msgid "Loading..."
+msgstr ""
+
+#: admin/partials/settings.php:138
+msgid "Save Settings"
+msgstr ""
+
+#: admin/partials/settings.php:156
+msgid "Please configure email settings before sending emails."
+msgstr ""
+
+#: admin/partials/settings.php:158
 msgid "If the settings fields are left blank, the corresponding section will not be added to email."
 msgstr ""
 
-#: admin/partials/settings.php:91
+#: admin/partials/settings.php:160
 msgid "Example: If you leave logo setting blank, no logo will be added to outgoing emails."
+msgstr ""
+
+#: admin/partials/settings.php:167
+msgid "CAUTION"
+msgstr ""
+
+#: admin/partials/settings.php:168
+msgid "Email from Name and Email from Address can be overwritten by other plugins."
+msgstr ""
+
+#: admin/partials/settings.php:170
+msgid "If from Name and from Email set here is not working, please make sure that other plugins are not overriding."
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:3
+msgid "Placeholder"
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:4
+msgid "You can use following placeholder to replace user detail on email."
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:9
+msgid "Use this placeholder to display username"
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:15
+msgid "Use this placeholder to display user display name"
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:21
+msgid "Use this placeholder to display user first name"
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:27
+msgid "Use this placeholder to display user last name"
+msgstr ""
+
+#: admin/partials/templates/placeholder-instruction.php:33
+msgid "Use this placeholder to display user email"
 msgstr ""
 
 #: admin/partials/users-email.php:7
@@ -248,5 +327,5 @@ msgid "Email"
 msgstr ""
 
 #: admin/partials/users-email.php:90
-msgid "Send email to individual users by selecting them from the user list.."
+msgid "Send email to individual users by selecting them from the user list."
 msgstr ""

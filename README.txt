@@ -1,11 +1,11 @@
 === Send Users Email ===
 Contributors: metalfreek
-Donate link: http://sumanbhattarai.com.np
+Donate link: https://sumanbhattarai.com.np
 Tags: email, email users, email roles, send email
 Requires at least: 5.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.3
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,10 @@ Please post your issue/question/suggestion/request to support forum. I will try 
 3. Send email by selecting roles
 
 == Changelog ==
+
+= 1.0.2 =
+* Username placeholder added to email template
+* Email From/Reply-To settings added
 
 = 1.0.1 =
 * Settings bug fix and style changes
