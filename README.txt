@@ -1,6 +1,6 @@
 === Send Users Email ===
 Contributors: metalfreek
-Donate link: https://sumanbhattarai.com.np
+Donate link: https://www.buymeacoffee.com/smnbhattarai
 Tags: email, email users, email roles, send email
 Requires at least: 5.7
 Tested up to: 5.9

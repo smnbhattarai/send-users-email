@@ -38,7 +38,7 @@
         postData += "&action=sue_user_email_ajax&param=send_email_user";
         $.post(ajaxurl, postData, function (res) {
             if (res.success === true) {
-                $('.sue-messages').html('<div class="alert alert-success">Emails send Successfully.</div>');
+                $('.sue-messages').html('<div class="alert alert-success">Emails sent Successfully.</div>');
                 $(".sueUserCheck").removeAttr('checked');
             }
         }).fail(function (res) {
@@ -84,7 +84,7 @@
         postData += "&action=sue_role_email_ajax&param=send_email_role";
         $.post(ajaxurl, postData, function (res) {
             if (res.success === true) {
-                $('.sue-messages').html('<div class="alert alert-success">Emails send Successfully.</div>');
+                $('.sue-messages').html('<div class="alert alert-success">Emails sent Successfully.</div>');
                 $(".roleCheckbox").removeAttr('checked');
             }
         }).fail(function (res) {
