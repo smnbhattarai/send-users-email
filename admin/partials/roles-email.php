@@ -31,7 +31,8 @@
                                                            style="margin-top: 7px;">
                                                     <label class="form-check-label"
                                                            for="<?php echo esc_attr( $slug ); ?>">
-														<?php echo ucfirst( esc_html( $slug ) ); ?>
+	                                                    <?php echo ucwords( str_replace( '_', ' ',
+		                                                    esc_html( $slug ) ) ); ?>
                                                     </label>
                                                 </div>
                                                 <span class="badge bg-primary rounded-pill"><?php echo esc_html($user_count); ?></span>
@@ -49,7 +50,7 @@
 
 							<?php
 							// Initialize RTE
-							wp_editor( '', 'sue_user_email_message', [ 'textarea_rows' => 12 ] );
+							wp_editor( '', 'sue_user_email_message', [ 'textarea_rows' => 15 ] );
 							?>
                             <div class="message"></div>
                         </div>
@@ -86,6 +87,9 @@
         </div>
 
         <div class="col-sm-3">
+
+	        <?php require_once SEND_USERS_EMAIL_PLUGIN_BASE_PATH . 'partials/donate.php'; ?>
+
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'Instruction', 'send-users-email' ); ?></h5>

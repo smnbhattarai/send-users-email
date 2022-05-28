@@ -49,7 +49,7 @@
 
 							<?php
 							// Initialize RTE
-							wp_editor( '', 'sue_user_email_message', [ 'textarea_rows' => 12 ] );
+							wp_editor( '', 'sue_user_email_message', [ 'textarea_rows' => 15 ] );
 							?>
                             <div class="message"></div>
                         </div>
@@ -84,6 +84,9 @@
         </div>
 
         <div class="col-sm-3">
+
+	        <?php require_once SEND_USERS_EMAIL_PLUGIN_BASE_PATH . 'partials/donate.php'; ?>
+
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'Instruction', 'send-users-email' ); ?></h5>

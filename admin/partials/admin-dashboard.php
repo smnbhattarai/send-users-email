@@ -34,6 +34,9 @@
         </div>
 
         <div class="col-sm-3">
+
+	        <?php require_once SEND_USERS_EMAIL_PLUGIN_BASE_PATH . 'partials/donate.php'; ?>
+
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'About', 'send-users-email' ); ?></h5>

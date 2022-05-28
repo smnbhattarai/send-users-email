@@ -127,6 +127,24 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <label for="email_template_style"
+                                               class="form-label"><?php echo __( 'Email Template Style',
+					                            'send-users-email' ); ?></label>
+                                        <div id="emailTemplateStyleHelp"
+                                             class="form-text"><?php echo __( 'Add your custom CSS style to email template. These style will be applied on top of default style.',
+					                            'send-users-email' ) ?></div>
+                                    </td>
+                                    <td>
+                                        <textarea
+                                                name="email_template_style"
+                                                id="email_template_style"
+                                                class="form-control"
+                                                rows="7"
+                                                placeholder="body { background-color:#eee; }"><?php echo esc_attr( $email_template_style ); ?></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <div class="spinner-border text-info sue-spinner" role="status">
                                             <span class="visually-hidden"><?php echo __( 'Loading...',
 		                                            'send-users-email' ) ?></span>
@@ -150,6 +168,9 @@
         </div>
 
         <div class="col-sm-3">
+
+	        <?php require_once SEND_USERS_EMAIL_PLUGIN_BASE_PATH . 'partials/donate.php'; ?>
+
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo __( 'Instruction', 'send-users-email' ); ?></h5>

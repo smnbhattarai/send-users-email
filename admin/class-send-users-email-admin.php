@@ -146,14 +146,15 @@ class Send_Users_Email_Admin {
 	 * Settings page
 	 */
 	public function settings() {
-		$options            = get_option( 'sue_send_users_email' );
-		$logo               = $options['logo_url'] ?? '';
-		$title              = $options['email_title'] ?? '';
-		$tagline            = $options['email_tagline'] ?? '';
-		$footer             = $options['email_footer'] ?? '';
-		$email_from_name    = $options['email_from_name'] ?? '';
-		$email_from_address = $options['email_from_address'] ?? '';
-		$reply_to_address   = $options['reply_to_address'] ?? '';
+		$options              = get_option( 'sue_send_users_email' );
+		$logo                 = $options['logo_url'] ?? '';
+		$title                = $options['email_title'] ?? '';
+		$tagline              = $options['email_tagline'] ?? '';
+		$footer               = $options['email_footer'] ?? '';
+		$email_from_name      = $options['email_from_name'] ?? '';
+		$email_from_address   = $options['email_from_address'] ?? '';
+		$reply_to_address     = $options['reply_to_address'] ?? '';
+		$email_template_style = $options['email_template_style'] ?? '';
 		require_once 'partials/settings.php';
 	}
 
@@ -434,6 +435,7 @@ class Send_Users_Email_Admin {
 		$title   = $options['email_title'] ?? '';
 		$tagline = $options['email_tagline'] ?? '';
 		$footer  = $options['email_footer'] ?? '';
+		$styles  = $options['email_template_style'] ?? '';
 		require 'partials/email-template.php';
 		$output = ob_get_contents();
 		ob_end_clean();
@@ -452,13 +454,14 @@ class Send_Users_Email_Admin {
 
 			if ( $param == 'sue_settings' && $action == 'sue_settings_ajax' ) {
 
-				$logo               = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
-				$title              = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : "";
-				$tagline            = isset( $_REQUEST['tagline'] ) ? sanitize_text_field( $_REQUEST['tagline'] ) : "";
-				$footer             = isset( $_REQUEST['footer'] ) ? sanitize_text_field( $_REQUEST['footer'] ) : "";
-				$email_from_name    = isset( $_REQUEST['email_from_name'] ) ? sanitize_text_field( $_REQUEST['email_from_name'] ) : "";
-				$email_from_address = isset( $_REQUEST['email_from_address'] ) ? sanitize_text_field( $_REQUEST['email_from_address'] ) : "";
-				$reply_to_address   = isset( $_REQUEST['reply_to_address'] ) ? sanitize_text_field( $_REQUEST['reply_to_address'] ) : "";
+				$logo                 = isset( $_REQUEST['logo'] ) ? esc_url_raw( $_REQUEST['logo'] ) : "";
+				$title                = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : "";
+				$tagline              = isset( $_REQUEST['tagline'] ) ? sanitize_text_field( $_REQUEST['tagline'] ) : "";
+				$footer               = isset( $_REQUEST['footer'] ) ? sanitize_text_field( $_REQUEST['footer'] ) : "";
+				$email_from_name      = isset( $_REQUEST['email_from_name'] ) ? sanitize_text_field( $_REQUEST['email_from_name'] ) : "";
+				$email_from_address   = isset( $_REQUEST['email_from_address'] ) ? sanitize_text_field( $_REQUEST['email_from_address'] ) : "";
+				$reply_to_address     = isset( $_REQUEST['reply_to_address'] ) ? sanitize_text_field( $_REQUEST['reply_to_address'] ) : "";
+				$email_template_style = isset( $_REQUEST['email_template_style'] ) ? sanitize_text_field( $_REQUEST['email_template_style'] ) : "";
 
 
 				// Validate inputs
@@ -512,13 +515,14 @@ class Send_Users_Email_Admin {
 
 					$options = get_option( 'sue_send_users_email' );
 
-					$options['logo_url']           = esc_url_raw( $logo );
-					$options['email_title']        = stripslashes_deep( wp_strip_all_tags( $title ) );
-					$options['email_tagline']      = stripslashes_deep( wp_strip_all_tags( $tagline ) );
-					$options['email_footer']       = stripslashes_deep( wp_strip_all_tags( $footer ) );
-					$options['email_from_name']    = stripslashes_deep( wp_strip_all_tags( $email_from_name ) );
-					$options['email_from_address'] = stripslashes_deep( wp_strip_all_tags( $email_from_address ) );
-					$options['reply_to_address']   = stripslashes_deep( wp_strip_all_tags( $reply_to_address ) );
+					$options['logo_url']             = esc_url_raw( $logo );
+					$options['email_title']          = stripslashes_deep( wp_strip_all_tags( $title ) );
+					$options['email_tagline']        = stripslashes_deep( wp_strip_all_tags( $tagline ) );
+					$options['email_footer']         = stripslashes_deep( wp_strip_all_tags( $footer ) );
+					$options['email_from_name']      = stripslashes_deep( wp_strip_all_tags( $email_from_name ) );
+					$options['email_from_address']   = stripslashes_deep( wp_strip_all_tags( $email_from_address ) );
+					$options['reply_to_address']     = stripslashes_deep( wp_strip_all_tags( $reply_to_address ) );
+					$options['email_template_style'] = stripslashes_deep( wp_strip_all_tags( $email_template_style ) );
 
 					update_option( 'sue_send_users_email', $options );
 

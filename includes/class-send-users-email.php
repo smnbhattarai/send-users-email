@@ -18,7 +18,7 @@ class Send_Users_Email {
 		if ( defined( 'SEND_USERS_EMAIL_VERSION' ) ) {
 			$this->version = SEND_USERS_EMAIL_VERSION;
 		} else {
-			$this->version = '1.0.2';
+			$this->version = '1.0.3';
 		}
 		$this->plugin_name = 'send-users-email';
 

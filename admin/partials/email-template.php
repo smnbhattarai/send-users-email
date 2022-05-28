@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $logo
+ * @var $styles
  * @var $title
  * @var $tagline
  * @var $email_body
@@ -10,42 +11,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title><?php bloginfo('name'); ?></title>
     <meta charset="UTF-8"/>
-</head>
-<body style="background-color: #ffffff; color: #000;">
 
-<table style="width: 50%; margin: 0 auto;">
+    <style>
+        .sue-logo td {
+            text-align: center;
+        }
+        .sue-logo img {
+            max-height: 75px;
+        }
+        .sue-title {
+            text-align: center;
+        }
+        .sue-tagline {
+            text-align: center;
+        }
+        .sue-footer td {
+            text-align: center;
+            padding-top: 30px;
+        }
+    </style>
+
+	<?php if ( $styles ): ?>
+        <style>
+            <?php echo stripslashes_deep( esc_html( $styles ) ); ?>
+        </style>
+	<?php endif; ?>
+
+</head>
+<body>
+
+<table class="sue-main-table">
 	<?php if ( esc_url_raw( $logo ) ): ?>
-        <tr>
-            <td style="text-align: center; padding: 15px 0;">
-                <img src="<?php echo esc_url_raw( $logo ); ?>" height="75"/>
+        <tr class="sue-logo">
+            <td>
+                <img src="<?php echo esc_url_raw( $logo ); ?>" alt="<?php bloginfo('name'); ?>"/>
             </td>
         </tr>
 	<?php endif; ?>
 
 	<?php if ( ( $title ) || $tagline ): ?>
-        <tr>
-            <td style="text-align: center; padding: 15px 0;">
+        <tr class="sue-title-tagline">
+            <td>
 				<?php if ( $title ): ?>
-                    <h2 style="margin-bottom: 5px;"><?php echo stripslashes_deep( esc_html( $title ) ); ?></h2>
+                    <h2 class="sue-title"><?php echo stripslashes_deep( esc_html( $title ) ); ?></h2>
 				<?php endif; ?>
 
 				<?php if ( $tagline ): ?>
-                    <h5 style="margin-top: 5px;"><?php echo stripslashes_deep( esc_html( $tagline ) ); ?></h5>
+                    <h5 class="sue-tagline"><?php echo stripslashes_deep( esc_html( $tagline ) ); ?></h5>
 				<?php endif; ?>
             </td>
         </tr>
 	<?php endif; ?>
 
-    <tr>
-        <td style="padding: 15px 0;">
+    <tr class="sue-email-body">
+        <td>
 			<?php echo wp_kses_post( stripslashes_deep( $email_body ) ); ?>
         </td>
     </tr>
 
 	<?php if ( $footer ): ?>
-        <tr>
-            <td style="text-align: center; padding: 15px 0; font-size: 0.9em;">
+        <tr class="sue-footer">
+            <td>
 				<?php echo stripslashes_deep( esc_html( $footer ) ); ?>
             </td>
         </tr>
