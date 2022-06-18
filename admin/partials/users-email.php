@@ -19,6 +19,21 @@
                             <div class="sue-user-email-datatable">
                                 <label for="sue_users"
                                        class="form-label"><?php echo __( 'Select Users', 'send-users-email' ); ?></label>
+
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo __( 'Filter users using user ID range', 'send-users-email' ); ?></strong>
+                                            </td>
+                                            <td><label for="minID">Minimum ID</label></td>
+                                            <td><input class="form-control" type="text" id="minID" name="minID"></td>
+                                            <td><label for="maxID">Maximum ID</label></td>
+                                            <td><input class="form-control" type="text" id="maxID" name="maxID"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                                 <table id="sue-user-email-tbl" class="table table-striped table-sm">
                                     <thead>
                                     <tr>

@@ -1,12 +1,41 @@
 (function ($) {
     'use strict';
 
+    /* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        var min = parseInt($('#minID').val(), 10);
+        var max = parseInt($('#maxID').val(), 10);
+        var id = parseFloat(data[1]) || 0; // use data for the ID column
+
+        if (
+            (isNaN(min) && isNaN(max)) ||
+            (isNaN(min) && id <= max) ||
+            (min <= id && isNaN(max)) ||
+            (min <= id && id <= max)
+        ) {
+            return true;
+        }
+        return false;
+    });
+
     // User email datatable initialization
-    $('#sue-user-email-tbl').DataTable({
+    var sueUserTbl = $('#sue-user-email-tbl').DataTable({
         "scrollY": "330px",
         "scrollCollapse": true,
         "paging": false,
         "order": [[1, "asc"]]
+    });
+
+    // Event listener to the two range filtering inputs to redraw on input
+    $('#minID, #maxID').keyup(function () {
+        sueUserTbl.draw();
+        var selectAllSel = $("#sueSelectAllUsers");
+        if (selectAllSel.is(':checked')) {
+            selectAllSel.trigger('click');
+        } else {
+            selectAllSel.trigger('click');
+            selectAllSel.trigger('click');
+        }
     });
 
     setTimeout(function () {
