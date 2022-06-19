@@ -26,9 +26,9 @@
                                             <td>
                                                 <strong><?php echo __( 'Filter users using user ID range', 'send-users-email' ); ?></strong>
                                             </td>
-                                            <td><label for="minID">Minimum ID</label></td>
+                                            <td><label for="minID"><?php echo __( 'Minimum ID', 'send-users-email' ); ?></label></td>
                                             <td><input class="form-control" type="text" id="minID" name="minID"></td>
-                                            <td><label for="maxID">Maximum ID</label></td>
+                                            <td><label for="maxID"><?php echo __( 'Maximum ID', 'send-users-email' ); ?></label></td>
                                             <td><input class="form-control" type="text" id="maxID" name="maxID"></td>
                                         </tr>
                                     </tbody>

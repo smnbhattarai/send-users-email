@@ -4,7 +4,7 @@
  * Plugin Name:       Send Users Email
  * Plugin URI:        https://sumanbhattarai.com.np
  * Description:       Easily send emails to your users. Select individual users or role to send the email.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Suman Bhattarai
  * Author URI:        https://sumanbhattarai.com.np
  * License:           GPL-2.0+
@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'SEND_USERS_EMAIL_VERSION', '1.0.3' );
+define( 'SEND_USERS_EMAIL_VERSION', '1.0.4' );
 
 /**
  * Currently plugin version.
