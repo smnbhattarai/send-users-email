@@ -9,6 +9,11 @@ class Send_Users_Email_Admin {
 
 	private $version;
 
+	// want to make it so we can have a specific role for sending email so not only administrators can send email
+	private $send_users_email_role_slug;
+	private $send_users_email_role_display;
+	private $send_users_email_role_capability;
+	
 	/**
 	 * Add all admin page slugs here ...
 	 */
@@ -26,6 +31,10 @@ class Send_Users_Email_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		// set up the slug, role, and capability to permit access by user role
+		$this->send_users_email_role_slug = "email_sender";
+		$this->send_users_email_role_display = "Email Sender";
+		$this->send_users_email_role_capability = "send_email";
 
 	}
 
@@ -72,7 +81,8 @@ class Send_Users_Email_Admin {
 
 		add_menu_page( __( "Send Users Email", "send-users-email" ),
 			__( "Email to users", "send-users-email" ),
-			'manage_options',
+			// allow access to users with the right roles
+			$this->send_users_email_role_capability,
 			'send-users-email',
 			[ $this, 'admin_dashboard' ],
 			'dashicons-email-alt2',
@@ -82,7 +92,8 @@ class Send_Users_Email_Admin {
 			'send-users-email',
 			__( 'Dashboard', "send-users-email" ),
 			__( 'Dashboard', "send-users-email" ),
-			'manage_options',
+			// allow access to users with the right roles
+			$this->send_users_email_role_capability,
 			'send-users-email',
 			[ $this, 'admin_dashboard' ]
 		);
@@ -91,7 +102,8 @@ class Send_Users_Email_Admin {
 			'send-users-email',
 			__( 'Email Users', "send-users-email" ),
 			__( 'Email Users', "send-users-email" ),
-			'manage_options',
+			// allow access to users with the right roles
+			$this->send_users_email_role_capability,
 			'send-users-email-users',
 			[ $this, 'users_email' ]
 		);
@@ -100,7 +112,8 @@ class Send_Users_Email_Admin {
 			'send-users-email',
 			__( 'Email Roles', "send-users-email" ),
 			__( 'Email Roles', "send-users-email" ),
-			'manage_options',
+			// allow access to users with the right roles
+			$this->send_users_email_role_capability,
 			'send-users-email-roles',
 			[ $this, 'roles_email' ]
 		);
@@ -109,13 +122,37 @@ class Send_Users_Email_Admin {
 			'send-users-email',
 			__( 'Settings', "send-users-email" ),
 			__( 'Settings', "send-users-email" ),
-			'manage_options',
+			// allow access to users with the right roles
+			$this->send_users_email_role_capability,
 			'send-users-email-settings',
 			[ $this, 'settings' ]
 		);
 
 	}
 
+	function send_users_email_activate_admin_actions()
+	{
+		// this method getes called when the plugin is activated
+		
+		// create a new role of email sender and give it the capability to send email
+		add_role($this->send_users_email_role_slug, $this->send_users_email_role_display, [$this->send_users_email_role_capability => true]);
+		
+		// make any site administrators able to send email
+		$roles = wp_roles();
+		$role = $roles->role_objects['administrator'];
+		$role->add_cap($this->send_users_email_role_capability);
+	}
+	
+	function send_users_email_deactivate_admin_actions()
+	{
+		// delete the role of email sender
+		remove_role($this->send_users_email_role_slug);
+		
+		// remove email capability from site administrators
+		$roles = wp_roles();
+		$role = $roles->role_objects['administrator'];
+		$role->remove_cap($this->send_users_email_role_capability);
+	}
 	/**
 	 * Admin Dashboard page
 	 */
@@ -198,8 +235,8 @@ class Send_Users_Email_Admin {
 				// Cleanup email progress record
 				Send_Users_Email_cleanup::cleanupUserEmailProgress();
 
-				// Check if current user is admin --- For now only administrator can send email
-				if ( current_user_can( 'administrator' ) ) {
+				// check to see if they are a user with sending email capability
+				if ( current_user_can( $this->send_users_email_role_capability ) ) {
 
 					$user_id             = get_current_user_id();
 					$total_email_send    = 0;
@@ -273,7 +310,8 @@ class Send_Users_Email_Admin {
 	 */
 	public function handle_ajax_email_users_progress() {
 
-		if ( current_user_can( 'administrator' ) ) {
+		// check to see if they are a user with sending email capability
+			if ( current_user_can( $this->send_users_email_role_capability ) ) {
 			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
 
@@ -331,8 +369,8 @@ class Send_Users_Email_Admin {
 				// Cleanup email progress record
 				Send_Users_Email_cleanup::cleanupRoleEmailProgress();
 
-				// Check if current user is admin --- For now only administrator can send email
-				if ( current_user_can( 'administrator' ) ) {
+				// check to see if they are a user with sending email capability
+				if ( current_user_can( $this->send_users_email_role_capability ) ) {
 
 					$user_id          = get_current_user_id();
 					$total_email_send = 0;
@@ -407,7 +445,8 @@ class Send_Users_Email_Admin {
 	 */
 	public function handle_ajax_email_roles_progress() {
 
-		if ( current_user_can( 'administrator' ) ) {
+		// check to see if they are a user with sending email capability
+		if ( current_user_can( $this->send_users_email_role_capability ) ) {
 			$param  = isset( $_REQUEST['param'] ) ? sanitize_text_field( $_REQUEST['param'] ) : "";
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : "";
 
@@ -504,8 +543,8 @@ class Send_Users_Email_Admin {
 					wp_send_json( array( 'errors' => $validation_message, 'success' => false ), 422 );
 				}
 
-				// Check if current user is admin --- For now only administrator can send email
-				if ( current_user_can( 'administrator' ) ) {
+				// check to see if they are a user with sending email capability
+				if ( current_user_can( $this->send_users_email_role_capability ) ) {
 
 					$options = get_option( 'sue_send_users_email' );
 
